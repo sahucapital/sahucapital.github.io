@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sahu Capital — Macro Thesis with Charts</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+// Dynamically load Chart.js and then initialize charts
+function loadScript(src, callback) {
+  var script = document.createElement('script');
+  script.src = src;
+  script.onload = callback;
+  script.onerror = function() {
+    // Try fallback CDN
+    loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', callback);
+  };
+  document.head.appendChild(script);
+}
+</script>
 <style>
   :root {
     --black:#0A0A0A; --dark:#111111; --card:#161616; --border:#222222;
@@ -433,6 +445,7 @@
 </div>
 
 <script>
+function initCharts() {
 // ── CHART DEFAULTS ──
 Chart.defaults.color = '#888888';
 Chart.defaults.borderColor = '#222222';
@@ -606,7 +619,8 @@ new Chart(document.getElementById('chart4'), {
     },
     scales: {
       x: { grid: { display: false }, ticks: { color: '#666', font: { size: 9 } } },
-      y: grid: { color: '#1A1A1A' },
+      y: {
+        grid: { color: '#1A1A1A' },
         ticks: { color: '#666', callback: v => v + '%' }
       }
     }
@@ -735,6 +749,15 @@ new Chart(document.getElementById('chart7'), {
     }
   }
 });
+} // end initCharts
+
+// Load Chart.js then run initCharts
+loadScript('https://unpkg.com/chart.js@4.4.0/dist/chart.umd.min.js', function() {
+  if (typeof Chart !== 'undefined') {
+    initCharts();
+  }
+});
 </script>
 </body>
 </html>
+      
