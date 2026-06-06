@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahu Capital — The Late-Mover Advantage</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script>
+function loadScript(src, callback) {
+  var s = document.createElement('script');
+  s.src = src;
+  s.onload = callback;
+  s.onerror = function() { loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', callback); };
+  document.head.appendChild(s);
+}
+</script>
+<style>
+:root {
+  --black:#080808; --dark:#0E0E0E; --card:#131313; --card2:#181818;
+  --border:#1E1E1E; --border2:#2A2A2A;
+  --gold:#C9A84C; --gold2:#E8C96A; --gold-dim:rgba(201,168,76,0.10);
+  --white:#F0EBE0; --grey:#666666; --light:#999999;
+  --red:#E05555; --green:#4CAF50; --blue:#5B8DEF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--white);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.85;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+
+/* COVER */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;padding:64px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.cover-bg{display:none;}
+.cover-glow{position:absolute;top:-200px;right:-100px;width:700px;height:700px;background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 60%);pointer-events:none;}
+.cover-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1;}
+.brand{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;}
+.doc-type{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;color:var(--grey);text-align:right;line-height:1.8;}
+.cover-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px 0;position:relative;z-index:1;}
+.cover-issue{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:16px;}
+.cover-issue::before{content:'';width:48px;height:1px;background:var(--gold);}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(40px,5.5vw,72px);font-weight:700;line-height:1.05;color:var(--white);margin-bottom:16px;max-width:820px;}
+.cover-title span{color:var(--gold);}
+.cover-sub{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:32px;}
+.cover-subtitle{font-family:'EB Garamond',serif;font-size:20px;font-style:italic;color:var(--light);max-width:640px;margin-bottom:52px;line-height:1.65;}
+.cover-divider{width:90px;height:1px;background:linear-gradient(to right,var(--gold),transparent);margin-bottom:52px;}
+.thesis-statement{background:var(--gold-dim);border-left:2px solid var(--gold);padding:28px 38px;max-width:760px;font-size:19px;font-style:italic;color:var(--white);line-height:1.8;}
+.cover-bottom{display:flex;justify-content:space-between;align-items:flex-end;padding-top:44px;border-top:1px solid var(--border);position:relative;z-index:1;}
+.author-name{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;letter-spacing:2px;color:var(--white);text-transform:uppercase;}
+.author-title{font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:2px;color:var(--grey);text-transform:uppercase;margin-top:4px;}
+.doc-meta{text-align:right;font-family:'Montserrat',sans-serif;font-size:10px;color:var(--grey);letter-spacing:1px;line-height:1.8;}
+
+/* PAGES */
+.page{max-width:960px;margin:0 auto;padding:84px 64px;border-bottom:1px solid var(--border);}
+.section-number{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:16px;}
+.section-number::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-title{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--white);margin-bottom:10px;line-height:1.15;}
+.section-title span{color:var(--gold);}
+.section-intro{font-size:18px;font-style:italic;color:var(--light);margin-bottom:52px;padding-bottom:52px;border-bottom:1px solid var(--border);line-height:1.7;}
+.body-text{font-size:17px;color:#CCCCCC;line-height:1.95;margin-bottom:28px;}
+.body-text strong{color:var(--white);}
+
+/* PULL QUOTE */
+.pull-quote{border-left:3px solid var(--gold);padding:32px 44px;margin:52px 0;background:var(--gold-dim);position:relative;}
+.pull-quote::before{content:'\201C';font-family:'Playfair Display',serif;font-size:90px;color:var(--gold);opacity:0.25;position:absolute;top:-10px;left:20px;line-height:1;}
+.pull-quote p{font-family:'Playfair Display',serif;font-size:21px;font-style:italic;color:var(--white);line-height:1.7;position:relative;z-index:1;}
+.pull-quote cite{display:block;margin-top:16px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+
+/* KEY QUESTION BOX */
+.key-question{background:var(--card2);border:1px solid var(--border2);padding:52px;margin:44px 0;text-align:center;position:relative;overflow:hidden;}
+.key-question::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 60%);}
+.kq-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;}
+.kq-q1{font-family:'Playfair Display',serif;font-size:26px;color:var(--light);font-style:italic;line-height:1.5;margin-bottom:20px;}
+.kq-divider{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--grey);margin:20px 0;}
+.kq-q2{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold);font-weight:700;line-height:1.5;}
+
+/* DATA STRIP */
+.data-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin:44px 0;}
+.data-item{background:var(--card);padding:28px 24px;}
+.data-label{font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;}
+.data-value{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--gold);}
+.data-note{font-family:'Montserrat',sans-serif;font-size:9px;color:var(--grey);margin-top:5px;letter-spacing:1px;}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:44px 0;font-family:'Montserrat',sans-serif;}
+thead tr{border-bottom:2px solid var(--gold);}
+th{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);padding:16px 18px;text-align:left;}
+td{font-size:13px;color:#CCCCCC;padding:15px 18px;border-bottom:1px solid var(--border);line-height:1.55;}
+tr:hover td{background:var(--card);}
+td:first-child{color:var(--white);font-weight:500;}
+td.gold{color:var(--gold);font-weight:600;}
+td.red{color:var(--red);}
+td.green{color:var(--green);}
+td.blue{color:var(--blue);}
+
+/* CHART */
+.chart-wrap{background:var(--card);border:1px solid var(--border);padding:40px;margin:44px 0;}
+.chart-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
+.chart-subtitle{font-family:'Montserrat',sans-serif;font-size:10px;color:var(--grey);letter-spacing:1px;margin-bottom:32px;}
+.chart-canvas-wrap{position:relative;height:320px;}
+.chart-source{font-family:'Montserrat',sans-serif;font-size:9px;color:var(--grey);letter-spacing:1px;margin-top:16px;text-align:right;}
+
+/* ADVANTAGE CARDS */
+.advantage-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:44px 0;}
+.advantage-card{background:var(--card);padding:40px;}
+.adv-number{font-family:'Playfair Display',serif;font-size:48px;font-weight:700;color:var(--gold);opacity:0.3;line-height:1;margin-bottom:12px;}
+.adv-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:16px;line-height:1.2;}
+.adv-text{font-size:14px;color:var(--light);line-height:1.75;}
+.adv-data{margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-family:'Montserrat',sans-serif;font-size:10px;color:var(--gold);letter-spacing:1px;}
+
+/* LEAPFROG TIMELINE */
+.leapfrog{margin:44px 0;}
+.leap-item{display:grid;grid-template-columns:180px 1fr;gap:0;margin-bottom:1px;}
+.leap-left{background:var(--card2);padding:24px 28px;display:flex;flex-direction:column;justify-content:center;border-right:3px solid var(--gold);}
+.leap-sector{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.leap-skip{font-family:'Playfair Display',serif;font-size:15px;color:var(--light);font-style:italic;}
+.leap-right{background:var(--card);padding:24px 32px;display:flex;align-items:center;}
+.leap-outcome{font-size:14px;color:#CCCCCC;line-height:1.6;}
+.leap-outcome strong{color:var(--white);}
+
+/* HISTORICAL TECH TABLE */
+.hist-table td{font-size:12px;}
+
+/* CONCENTRATION RISK */
+.concentration-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin:44px 0;}
+.conc-card{background:var(--card);padding:36px;}
+.conc-country{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--grey);margin-bottom:12px;}
+.conc-company{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;}
+.conc-peak{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.conc-desc{font-size:12px;color:var(--light);line-height:1.65;}
+.conc-warning{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--red);}
+
+/* RISK GRID */
+.risk-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:44px 0;}
+.risk-item{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--red);padding:28px;}
+.risk-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:10px;}
+.risk-text{font-size:13px;color:#AAAAAA;line-height:1.65;}
+
+/* CONCLUSION */
+.conclusion-box{background:var(--gold-dim);border:1px solid var(--gold);padding:52px;margin:52px 0;text-align:center;}
+.conclusion-box p{font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--white);line-height:1.75;max-width:700px;margin:0 auto;}
+.conclusion-box cite{display:block;margin-top:24px;font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;}
+
+/* FOOTER */
+.thesis-footer{background:var(--dark);padding:44px 64px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);}
+.footer-brand{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:5px;color:var(--gold);text-transform:uppercase;}
+.footer-disc{font-family:'Montserrat',sans-serif;font-size:9px;color:var(--grey);letter-spacing:1px;max-width:440px;text-align:right;line-height:1.7;}
+
+h3.sub{font-family:'Playfair Display',serif;font-size:26px;color:var(--white);margin:52px 0 16px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.cover-issue{animation:fadeUp 0.5s ease forwards;}
+.cover-title{animation:fadeUp 0.5s 0.1s ease forwards;opacity:0;}
+.cover-subtitle{animation:fadeUp 0.5s 0.2s ease forwards;opacity:0;}
+.thesis-statement{animation:fadeUp 0.5s 0.3s ease forwards;opacity:0;}
+
+@media(max-width:900px){
+  .cover,.page,.thesis-footer{padding:40px 24px;}
+  .advantage-grid,.concentration-grid,.risk-grid,.data-strip{grid-template-columns:1fr;}
+  .cover-title{font-size:36px;}
+  .leap-item{grid-template-columns:1fr;}
+  .leap-left{border-right:none;border-bottom:3px solid var(--gold);}
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-glow"></div>
+  <div class="cover-top">
+    <div class="brand">Sahu Capital</div>
+    <div class="doc-type">Thematic Research · Issue 002<br>June 2026 · Mumbai, India</div>
+  </div>
+  <div class="cover-main">
+    <div class="cover-issue">Thematic Research — Issue 002</div>
+    <h1 class="cover-title">The <span>Late-Mover</span><br>Advantage</h1>
+    <div class="cover-sub">Why India's Relative Delay in AI Adoption May Become a Strategic Economic Strength</div>
+    <p class="cover-subtitle">The prevailing narrative assumes first movers capture the most value from AI. History suggests the story is more nuanced — and potentially more interesting for India.</p>
+    <div class="cover-divider"></div>
+    <div class="thesis-statement">"Markets often reward first movers. History occasionally rewards patient followers even more. India's relative delay in AI may prove to be not a weakness — but one of the most underappreciated strategic advantages of the next decade."</div>
+  </div>
+  <div class="cover-bottom">
+    <div>
+      <div class="author-name">Shubham Sahu</div>
+      <div class="author-title">Founder, Sahu Capital &nbsp;·&nbsp; Independent Investment Analyst &nbsp;·&nbsp; Mumbai</div>
+    </div>
+    <div class="doc-meta">June 2026<br>For Educational Purposes Only<br>Not Investment Advice</div>
+  </div>
+</div>
+
+<!-- AUTHOR NOTE -->
+<div class="page">
+  <div class="section-number">Author's Note</div>
+  <h2 class="section-title">A Note on <span>Contrarian Thinking</span></h2>
+  <p class="section-intro">This thesis is a deliberate exercise in second-order thinking — examining what most market participants overlook by stopping at the first-order conclusion.</p>
+  <p class="body-text">The dominant market narrative frames AI leadership as a zero-sum race. Under this framework, the United States wins, China challenges, and India falls behind. The investment implication appears obvious: overweight AI leaders, underweight laggards.</p>
+  <p class="body-text">This thesis challenges that framing — not by dismissing AI's transformative potential, but by questioning whether the current phase of the AI investment cycle necessarily creates the best economic outcomes for early participants.</p>
+  <div class="pull-quote">
+    <p>Is India missing the AI revolution? Or is India avoiding the most expensive phase of it?</p>
+    <cite>— Core Question · Sahu Capital</cite>
+  </div>
+  <p class="body-text">History provides a surprisingly consistent answer. In several previous technology cycles — railways, radio, internet infrastructure, telecom networks, renewable energy — the greatest economic beneficiaries were not always the earliest investors. They were often the economies and enterprises that adopted proven technologies <strong>after infrastructure costs collapsed, business models matured, and speculative capital was removed from the system.</strong></p>
+</div>
+
+<!-- SECTION 1 — THE AI INVESTMENT CONTEXT -->
+<div class="page">
+  <div class="section-number">Section 01</div>
+  <h2 class="section-title">The <span>AI Investment</span> Context</h2>
+  <p class="section-intro">Understanding the scale of the current AI capital expenditure cycle — and why history suggests caution alongside enthusiasm.</p>
+  <p class="body-text">Global AI enthusiasm has produced one of the largest coordinated capital allocation waves in modern financial history. Billions of dollars are being committed toward semiconductor fabrication, data centers, AI infrastructure, foundation models, and compute networks simultaneously.</p>
+
+  <!-- LIVE DATA STRIP -->
+  <div class="data-strip">
+    <div class="data-item">
+      <div class="data-label">GPT-3 Training Cost (2020)</div>
+      <div class="data-value">$4.6M</div>
+      <div class="data-note">Original estimate · OpenAI</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">GPT-4 Training Cost (2023)</div>
+      <div class="data-value">$100M+</div>
+      <div class="data-note">Estimated compute cost</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">GPT-5 Training Cost (2025)</div>
+      <div class="data-value">$1.25B+</div>
+      <div class="data-note">Total estimated training</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">Inference Cost Reduction</div>
+      <div class="data-value">280x</div>
+      <div class="data-note">In 18 months · Stanford AI Index</div>
+    </div>
+  </div>
+
+  <p class="body-text">The data reveals a striking asymmetry. <strong>Training costs at the frontier are escalating exponentially</strong> — GPT-5 cost over 270 times more to train than GPT-3. Yet simultaneously, <strong>inference costs — the cost of actually using AI — have collapsed 280-fold in 18 months.</strong></p>
+  <p class="body-text">This divergence is critical to the late-mover thesis. The entities bearing the enormous costs of frontier AI development are largely concentrated in a handful of US and Chinese technology giants. The entities that will eventually consume the outputs — at drastically reduced costs — could be distributed globally, including India.</p>
+
+  <!-- CHART 1 — AI TRAINING COST ESCALATION -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 01 — Frontier AI Training Cost Escalation vs Inference Cost Collapse</div>
+    <div class="chart-subtitle">Training costs at the frontier grow exponentially while inference costs collapse — creating a future window for low-cost AI adoption.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart1"></canvas></div>
+    <div class="chart-source">Source: Stanford AI Index 2025, Epoch AI, OpenAI estimates · Compiled by Sahu Capital</div>
+  </div>
+
+  <p class="body-text">The investment implication is profound. Countries and companies bearing the pioneer cost of AI today are funding the infrastructure that late movers will eventually access at a fraction of the original price. <strong>This has happened in every major technology cycle in modern history.</strong></p>
+</div>
+
+<!-- SECTION 2 — HISTORICAL TECHNOLOGY CYCLES -->
+<div class="page">
+  <div class="section-number">Section 02</div>
+  <h2 class="section-title">Historical <span>Technology Cycles</span></h2>
+  <p class="section-intro">Five historical precedents where technological revolutions created value for society while simultaneously destroying early shareholder capital.</p>
+  <p class="body-text">The assumption that AI investment necessarily creates proportional economic value deserves serious scrutiny. History offers a consistent and sobering counterpoint — the largest capital expenditure cycles in technology have repeatedly generated both extraordinary winners and extraordinary capital destruction for early participants.</p>
+
+  <!-- HISTORICAL TECH TABLE -->
+  <table class="hist-table">
+    <thead>
+      <tr>
+        <th>Technology Cycle</th>
+        <th>Peak Era</th>
+        <th>Early Investor Outcome</th>
+        <th>Late-Mover Beneficiary</th>
+        <th>Key Lesson</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Railways</td>
+        <td>1840s–1850s</td>
+        <td class="red">Railway Mania — mass bankruptcy</td>
+        <td class="green">Industrial economies using railways cheaply</td>
+        <td>Infrastructure built at peak; used at trough</td>
+      </tr>
+      <tr>
+        <td>Radio</td>
+        <td>1920s</td>
+        <td class="red">RCA crash — 97% value destruction</td>
+        <td class="green">Advertisers and consumers in 1930s–40s</td>
+        <td>Content creators won; hardware investors lost</td>
+      </tr>
+      <tr>
+        <td>Internet Infrastructure</td>
+        <td>1995–2000</td>
+        <td class="red">Dotcom bust — $5T market cap lost</td>
+        <td class="green">Google, Amazon — built on cheap infrastructure</td>
+        <td>Survivors built empires on collapsed assets</td>
+      </tr>
+      <tr>
+        <td>Telecom Networks</td>
+        <td>1999–2001</td>
+        <td class="red">Worldcom, Nortel — total collapse</td>
+        <td class="green">Mobile-first emerging markets in 2010s</td>
+        <td>India skipped landlines entirely via mobile</td>
+      </tr>
+      <tr>
+        <td>Renewable Energy</td>
+        <td>2010–2015</td>
+        <td class="red">Solar panel producers collapsed 90%+</td>
+        <td class="green">Solar consumers post cost-collapse</td>
+        <td>Cost curve collapse made solar viable globally</td>
+      </tr>
+      <tr>
+        <td style="color:var(--gold);font-weight:600;">Artificial Intelligence</td>
+        <td style="color:var(--gold);">2023–Present</td>
+        <td class="blue">Ongoing — $1T+ committed</td>
+        <td class="blue">India? · 2027–2030?</td>
+        <td style="color:var(--gold);">Pattern suggests opportunity forming</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- CHART 2 — TECH CYCLE PATTERN -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 02 — The Recurring Technology Cycle Pattern</div>
+    <div class="chart-subtitle">Early capital destruction followed by late-mover opportunity. The pattern has repeated across five major technology cycles spanning 180 years.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart2"></canvas></div>
+    <div class="chart-source">Source: Historical market data, Sahu Capital research · Illustrative pattern based on documented cycles</div>
+  </div>
+
+  <div class="pull-quote">
+    <p>Technological revolutions frequently create value for society while simultaneously destroying shareholder capital. The question is not whether AI will transform the world — it almost certainly will. The question is who bears the cost of that transformation.</p>
+    <cite>— Sahu Capital</cite>
+  </div>
+</div>
+
+<!-- SECTION 3 — INDIA'S FOUR STRUCTURAL ADVANTAGES -->
+<div class="page">
+  <div class="section-number">Section 03</div>
+  <h2 class="section-title">India's Four <span>Structural Advantages</span></h2>
+  <p class="section-intro">Why India's position in the AI cycle may be structurally superior to what the conventional narrative suggests.</p>
+
+  <div class="advantage-grid">
+    <div class="advantage-card">
+      <div class="adv-number">01</div>
+      <div class="adv-title">Lower Labour Cost Reduces Automation Urgency</div>
+      <div class="adv-text">Unlike developed economies facing acute labour shortages and rising wage inflation, India does not face the same economic pressure to replace workers with AI. The cost-benefit calculus for large-scale AI deployment remains less compelling than in Western markets — allowing India to delay expensive AI infrastructure investments until technology becomes cheaper and commercially proven.</div>
+      <div class="adv-data">India avg. monthly wage ~₹25,000 vs US ~$5,800 · Labour arbitrage remains substantial</div>
+    </div>
+    <div class="advantage-card">
+      <div class="adv-number">02</div>
+      <div class="adv-title">Avoiding Early-Adopter Capital Destruction</div>
+      <div class="adv-text">The first phase of every technological revolution attracts excessive capital. Many projects fail. Many business models disappear. Many valuations collapse. India may avoid this phase entirely — acquiring mature AI capabilities at substantially lower costs rather than financing the expensive and uncertain experimentation phase currently underway in the US and China.</div>
+      <div class="adv-data">Inference costs already fell 280x in 18 months · Cost curve collapse ongoing</div>
+    </div>
+    <div class="advantage-card">
+      <div class="adv-number">03</div>
+      <div class="adv-title">Employment Preservation During Demographic Expansion</div>
+      <div class="adv-text">India remains one of the few major economies with a genuinely growing workforce. Rapid, premature automation may create significant social and economic challenges if implemented before sufficient alternative employment opportunities exist. A measured adoption path may allow productivity gains to materialize without large-scale labour displacement — preserving social stability during a critical growth phase.</div>
+      <div class="adv-data">India adds ~12 million new workers annually · World's largest youth population</div>
+    </div>
+    <div class="advantage-card">
+      <div class="adv-number">04</div>
+      <div class="adv-title">The Leapfrogging Capability</div>
+      <div class="adv-text">India has demonstrated a remarkable and repeated ability to bypass legacy technology generations entirely — adopting mature, cost-optimized solutions that skip the expensive intermediate stages. This structural capability may allow India to adopt mature AI architectures after costs decline significantly, skipping early-generation systems entirely — just as it did with payments, telecoms, and mobile banking.</div>
+      <div class="adv-data">UPI now processes 49% of global real-time payments · Built in under 10 years</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 4 — THE LEAPFROG EVIDENCE -->
+<div class="page">
+  <div class="section-number">Section 04</div>
+  <h2 class="section-title">The <span>Leapfrog</span> Evidence</h2>
+  <p class="section-intro">India's documented history of bypassing legacy technology generations — and why AI could follow the same pattern.</p>
+  <p class="body-text">India's leapfrogging capability is not a theoretical construct. It is a documented, repeatable pattern across multiple technology domains spanning three decades. Each instance followed the same structure: the incumbent technology was expensive, entrenched, and dominant globally — and India bypassed it entirely to adopt the superior successor.</p>
+
+  <div class="leapfrog">
+    <div class="leap-item">
+      <div class="leap-left">
+        <div class="leap-sector">Telecoms</div>
+        <div class="leap-skip">Skipped landlines</div>
+      </div>
+      <div class="leap-right">
+        <div class="leap-outcome">India went directly to <strong>mobile networks</strong> — bypassing decades of fixed-line infrastructure investment. Today India has 1.1 billion mobile subscribers with landline penetration still below 5%.</div>
+      </div>
+    </div>
+    <div class="leap-item">
+      <div class="leap-left">
+        <div class="leap-sector">Payments</div>
+        <div class="leap-skip">Skipped card systems</div>
+      </div>
+      <div class="leap-right">
+        <div class="leap-outcome">India bypassed the card-dominated payment ecosystem to build <strong>UPI</strong> — now processing <strong>49% of all global real-time payments</strong>. In May 2025, UPI transaction value was 12x greater than all card transactions combined. The US, built on card infrastructure, cannot replicate this easily.</div>
+      </div>
+    </div>
+    <div class="leap-item">
+      <div class="leap-left">
+        <div class="leap-sector">Banking</div>
+        <div class="leap-skip">Skipped branch banking</div>
+      </div>
+      <div class="leap-right">
+        <div class="leap-outcome">Jan Dhan Yojana used <strong>mobile-first banking</strong> to bring 500 million unbanked citizens into the financial system in under 5 years — bypassing the traditional branch-expansion model that took Western banks a century.</div>
+      </div>
+    </div>
+    <div class="leap-item">
+      <div class="leap-left">
+        <div class="leap-sector">Computing</div>
+        <div class="leap-skip">Skipped desktop-first</div>
+      </div>
+      <div class="leap-right">
+        <div class="leap-outcome">India adopted <strong>smartphone-first internet access</strong> — bypassing the desktop computing phase. 95% of Indian households have a mobile phone; only 9.9% own a computer. The internet arrived directly in people's pockets.</div>
+      </div>
+    </div>
+    <div class="leap-item" style="border-left:3px solid var(--gold);">
+      <div class="leap-left" style="border-color:var(--gold);background:var(--gold-dim);">
+        <div class="leap-sector" style="color:var(--gold);">AI — Next?</div>
+        <div class="leap-skip" style="color:var(--white);">Skip early-gen AI</div>
+      </div>
+      <div class="leap-right" style="background:var(--gold-dim);">
+        <div class="leap-outcome"><strong>India may skip first-generation, expensive AI infrastructure</strong> — adopting mature, cost-optimized AI architectures after costs collapse. The pattern is consistent. The capability is proven. The question is timing.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPI DATA CHART -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 03 — India's UPI vs Global Real-Time Payment Leaders (June 2025)</div>
+    <div class="chart-subtitle">India's leapfrog in payments — processing more real-time transactions than Brazil, Thailand, China, and South Korea combined. AI could follow the same trajectory.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart3"></canvas></div>
+    <div class="chart-source">Source: ACI Worldwide Report 2024, IMF, NPCI · June 2025 transaction data · Compiled by Sahu Capital</div>
+  </div>
+</div>
+
+<!-- SECTION 5 — CONCENTRATION RISK -->
+<div class="page">
+  <div class="section-number">Section 05</div>
+  <h2 class="section-title">The <span>Concentration Risk</span> Nobody Is Discussing</h2>
+  <p class="section-intro">When national economic fortunes become tied to single technology companies — and what history says about what comes next.</p>
+  <p class="body-text">The current AI boom has created extraordinary market concentration. Taiwan's equity market has become increasingly dependent on TSMC. South Korea's market performance is heavily influenced by Samsung Electronics and SK Hynix. The United States market is increasingly driven by a narrow group of AI infrastructure beneficiaries.</p>
+  <p class="body-text">This concentration is not unprecedented. History provides two instructive precedents where similar concentration dynamics ultimately created significant systemic risk — regardless of the underlying quality of the businesses involved.</p>
+
+  <div class="concentration-grid">
+    <div class="conc-card">
+      <div class="conc-country">Finland</div>
+      <div class="conc-company">Nokia</div>
+      <div class="conc-peak">~70%</div>
+      <div class="conc-desc">At its dotcom peak in 2000, Nokia represented approximately 70% of Finland's equity market capitalisation and 30% of the country's entire GDP — paying almost a quarter of all Finnish corporate taxes. The company appeared structurally unassailable as the world's dominant mobile phone manufacturer. Technological disruption by Apple's iPhone and Android proved otherwise. Finland's extreme market concentration amplified the economic damage of a single company's decline dramatically.</div>
+      <div class="conc-warning">Outcome: 90%+ value destruction · 30% of Finnish GDP at peak</div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-country">Denmark</div>
+      <div class="conc-company">Novo Nordisk</div>
+      <div class="conc-peak">~57%</div>
+      <div class="conc-desc">Novo Nordisk's success with GLP-1 weight loss drugs elevated Denmark's market capitalization to levels exceeding the country's GDP. The company became the most valuable in Europe. While Novo Nordisk remains an exceptional business, concentration risk at this scale introduces a different form of vulnerability — particularly if competitive dynamics shift.</div>
+      <div class="conc-warning">Still unresolved — concentration risk remains elevated</div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-country">Taiwan</div>
+      <div class="conc-company">TSMC</div>
+      <div class="conc-peak">42%+</div>
+      <div class="conc-desc">TSMC now accounts for over 42% of Taiwan's benchmark TAIEX index — and over 50% of the MSCI Taiwan Index. The company's market cap of ~$2.26 trillion as of June 2026 is equivalent to approximately 150% of Taiwan's entire GDP. Taiwan's financial regulator changed fund rules specifically to allow more TSMC investment — underscoring how deeply the market has become dependent on a single name.</div>
+      <div class="conc-warning">TSMC ~150% of Taiwan GDP · 42%+ of TAIEX · 50%+ of MSCI Taiwan</div>
+    </div>
+    <div class="conc-card">
+      <div class="conc-country">South Korea</div>
+      <div class="conc-company">Samsung + SK Hynix</div>
+      <div class="conc-peak">~47–50%</div>
+      <div class="conc-desc">Samsung Electronics and SK Hynix combined now account for approximately 47–50% of the KOSPI index — the highest concentration level in over a year, approaching half the entire South Korean market. Samsung accounts for ~26% and SK Hynix ~21% individually. Korea has become the only country outside the US with two companies simultaneously valued above $1 trillion. SK Hynix surged 274% in 2025 and 188% in 2026.</div>
+      <div class="conc-warning">~47–50% of KOSPI · Two $1T+ companies · Highest concentration in 16 months</div>
+    </div>
+  </div>
+
+  <!-- CHART 4 — CONCENTRATION RISK -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 04 — Market Concentration Risk: Single Company Share of National Market Cap</div>
+    <div class="chart-subtitle">When a single company dominates a national market, systemic risk rises regardless of company quality. India's diversified market structure may prove advantageous.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart4"></canvas></div>
+    <div class="chart-source">Source: Bloomberg, various national exchanges · Compiled by Sahu Capital · Approximate peak figures</div>
+  </div>
+
+  <div class="pull-quote">
+    <p>The question is not whether TSMC, Samsung, or Nvidia are exceptional companies. The question is whether global investors are underestimating the risks associated with supply chain concentration, geopolitical exposure, technology-cycle volatility, and capital expenditure intensity. India's diversified market structure may ultimately prove to be a structural advantage.</p>
+    <cite>— Sahu Capital</cite>
+  </div>
+</div>
+
+<!-- SECTION 6 — INDIA'S AI REALITY -->
+<div class="page">
+  <div class="section-number">Section 06</div>
+  <h2 class="section-title">India's <span>AI Reality</span> — The Data</h2>
+  <p class="section-intro">What is actually happening in India's AI ecosystem — and why the "laggard" narrative misrepresents the situation.</p>
+  <p class="body-text">The "India is falling behind in AI" narrative deserves empirical scrutiny. The data presents a more nuanced picture — one of selective, deliberate adoption rather than absence.</p>
+
+  <div class="data-strip">
+    <div class="data-item">
+      <div class="data-label">India AI Market 2024</div>
+      <div class="data-value">$9.5B</div>
+      <div class="data-note">Fortune Business Insights</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">Projected 2032</div>
+      <div class="data-value">$130B</div>
+      <div class="data-note">39% CAGR · Fortune BI</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">AI Talent Base</div>
+      <div class="data-value">2nd</div>
+      <div class="data-note">Globally · Nasscom 2024</div>
+    </div>
+    <div class="data-item">
+      <div class="data-label">Companies Adopting AI</div>
+      <div class="data-value">87%</div>
+      <div class="data-note">In Enthusiast/Expert stage · Nasscom</div>
+    </div>
+  </div>
+
+  <!-- CHART 5 — INDIA AI GROWTH -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 05 — India AI Market Size Projection 2024–2032</div>
+    <div class="chart-subtitle">India's AI market growing at 39% CAGR — not absent from AI, but adopting selectively as costs normalize. The growth curve accelerates post-2026.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart5"></canvas></div>
+    <div class="chart-source">Source: Fortune Business Insights, Nasscom AI Adoption Index 2024 · Compiled by Sahu Capital</div>
+  </div>
+
+  <p class="body-text">India is not absent from AI. India possesses the <strong>world's second-largest AI talent base</strong>, an AI market growing at 39% CAGR, and 87% of surveyed companies already in active AI adoption stages. The IndiaAI mission provides national-scale policy support. The digital public infrastructure — Aadhaar, UPI, ONDC — provides a data and connectivity foundation that many AI applications require.</p>
+  <p class="body-text">What India is avoiding is <strong>the speculative, capital-intensive frontier phase</strong> — the phase where GPT-5 training runs cost over $1 billion and data center investments require decades to generate returns. This is not absence. This is selection.</p>
+</div>
+
+<!-- SECTION 7 — THE ALTERNATIVE INTERPRETATION -->
+<div class="page">
+  <div class="section-number">Section 07</div>
+  <h2 class="section-title">The <span>Alternative</span> Interpretation</h2>
+  <p class="section-intro">What the late-mover framework suggests about India's potential position in the second phase of the AI cycle.</p>
+
+  <div class="key-question">
+    <div class="kq-label">The Central Question</div>
+    <div class="kq-q1">"Is India missing the AI revolution?"</div>
+    <div class="kq-divider">— or —</div>
+    <div class="kq-q2">"Is India avoiding the most expensive phase of it?"</div>
+  </div>
+
+  <p class="body-text">The biggest winner of the AI revolution may not necessarily be the country building the most AI infrastructure. It may be the country that successfully <strong>deploys AI after infrastructure costs collapse, technology standards stabilize, competitive dynamics mature, and return on investment becomes measurable.</strong></p>
+  <p class="body-text">Consider the internet infrastructure parallel. Billions of dollars of fiber optic cable were laid during the dotcom boom — much of it never used, leading to the bankruptcy of WorldCom, Global Crossing, and dozens of others. Yet that stranded infrastructure formed the backbone of the internet economy for the next two decades. Google and Amazon built multi-trillion dollar businesses on the ruins of the dotcom bubble — at a fraction of the original infrastructure cost.</p>
+
+  <!-- CHART 6 — LATE MOVER ADVANTAGE FRAMEWORK -->
+  <div class="chart-wrap">
+    <div class="chart-title">Chart 06 — The Late-Mover Advantage Framework: Cost vs Adoption Timing</div>
+    <div class="chart-subtitle">Early adopters bear maximum cost. Late movers access mature technology at collapsed costs. The optimal adoption window emerges after the speculative phase ends.</div>
+    <div class="chart-canvas-wrap"><canvas id="chart6"></canvas></div>
+    <div class="chart-source">Source: Sahu Capital Framework · Based on historical technology adoption cost curves</div>
+  </div>
+
+  <p class="body-text">India could emerge as a significant beneficiary of the AI revolution without bearing the full pioneering cost. The same pattern that allowed India to build the world's largest real-time payments network — by watching others build card infrastructure first, understanding its limitations, and then building something better — could apply to AI adoption.</p>
+
+  <div class="pull-quote">
+    <p>The AI race may ultimately be remembered not only for the nations that built the technology, but also for the nations that adopted it most efficiently. India's position in that second phase may be stronger than current narratives suggest.</p>
+    <cite>— Sahu Capital</cite>
+  </div>
+</div>
+
+<!-- SECTION 8 — RISKS -->
+<div class="page">
+  <div class="section-number">Section 08</div>
+  <h2 class="section-title">Risks to <span>This Thesis</span></h2>
+  <p class="section-intro">The conditions under which the late-mover advantage thesis fails — presented with the same intellectual honesty as the core argument.</p>
+
+  <div class="risk-grid">
+    <div class="risk-item">
+      <div class="risk-title">AI Productivity Arrives Faster Than Expected</div>
+      <div class="risk-text">If AI drives rapid, measurable productivity gains before costs normalize, early-adopter nations may build insurmountable economic leads. The window for late-mover advantage may close faster than historical analogies suggest.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Global Capital Structurally Favors AI Leaders</div>
+      <div class="risk-text">If institutional capital permanently rerates AI-leading nations at premium valuations, India's relative positioning may create a sustained cost-of-capital disadvantage regardless of eventual AI adoption efficiency.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Talent Drain Accelerates</div>
+      <div class="risk-text">India's second-largest AI talent base is mobile. If AI-leading economies accelerate visa programs and compensation packages for Indian AI engineers, India may find itself training talent for others rather than capturing domestic value.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">Domestic Firms Systematically Underinvest</div>
+      <div class="risk-text">The late-mover advantage requires eventual, decisive adoption. If Indian firms consistently underinvest in AI capabilities even as costs normalize, the advantage window passes without being captured.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">AI Reshapes Manufacturing Competitiveness</div>
+      <div class="risk-text">If AI-driven automation eliminates India's labour cost advantage in manufacturing before sufficient industrial development occurs, the demographic dividend may become a demographic burden rather than an advantage.</div>
+    </div>
+    <div class="risk-item">
+      <div class="risk-title">The Pattern Does Not Repeat</div>
+      <div class="risk-text">Historical analogies are illustrative, not deterministic. AI may represent a genuinely discontinuous technology shift where first-mover advantages are more durable than in previous cycles — particularly in foundation model development and data network effects.</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 9 — CONCLUSION -->
+<div class="page">
+  <div class="section-number">Section 09</div>
+  <h2 class="section-title">Final <span>Conclusion</span></h2>
+  <p class="section-intro">What five historical technology cycles, India's documented leapfrogging capability, and second-order thinking suggest about the AI narrative.</p>
+  <p class="body-text">The prevailing market narrative frames AI as a race with clear winners and clear losers. Under this framing, India is a laggard. The investment implication appears straightforward: overweight AI infrastructure leaders, underweight delayed adopters.</p>
+  <p class="body-text">This thesis has presented a different framework — one grounded in five historical technology cycles, India's documented leapfrogging capabilities, the concentration risks emerging in AI-leading economies, and the extraordinary cost collapse already underway in AI inference.</p>
+  <p class="body-text"><strong>The late-mover thesis does not argue that India will win the AI race. It argues that the AI race may ultimately be won in the adoption phase, not the pioneering phase — and that India's structural position for the adoption phase is considerably stronger than current narratives acknowledge.</strong></p>
+
+  <div class="conclusion-box">
+    <p>"Markets often reward first movers. History occasionally rewards patient followers even more. India's relative delay in AI adoption may prove to be not a weakness — but one of the most underappreciated strategic advantages of the next decade."</p>
+    <cite>— Shubham Sahu · Founder, Sahu Capital · June 2026</cite>
+  </div>
+
+  <p class="body-text">That possibility deserves serious consideration. Not as an excuse for complacency, but as a framework for understanding that in technology cycles of this magnitude, the first phase and the winning phase are rarely the same thing.</p>
+</div>
+
+<!-- FOOTER -->
+<div class="thesis-footer">
+  <div class="footer-brand">Sahu Capital · Thematic Research · Issue 002 · June 2026</div>
+  <div class="footer-disc">For educational and research purposes only. Not investment advice. All analysis represents independent views of the author. Historical patterns do not guarantee future outcomes. Past performance is not indicative of future results.</div>
+</div>
+
+<script>
+function initCharts() {
+  Chart.defaults.color = '#888888';
+  Chart.defaults.borderColor = '#222222';
+  Chart.defaults.font.family = "'Montserrat', sans-serif";
+  Chart.defaults.font.size = 10;
+
+  const GOLD='#C9A84C', RED='#E05555', GREEN='#4CAF50', BLUE='#5B8DEF', GREY='#333333', WHITE='#F0EBE0';
+
+  // CHART 1 — AI Training Cost Escalation vs Inference Cost Collapse
+  new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+      labels: ['GPT-2\n2019', 'GPT-3\n2020', 'GPT-4\n2023', 'Gemini Ultra\n2024', 'GPT-5\n2025'],
+      datasets: [
+        {
+          label: 'Training Cost (USD Millions)',
+          data: [0.04, 4.6, 100, 191, 1250],
+          backgroundColor: 'rgba(224,85,85,0.7)',
+          borderWidth: 0, borderRadius: 2,
+          yAxisID: 'y1', order: 2
+        },
+        {
+          label: 'Inference Cost Index (Normalized, 2022=100)',
+          data: [null, null, 15, 2, 0.36],
+          type: 'line',
+          borderColor: GOLD, backgroundColor: 'transparent',
+          borderWidth: 2.5, pointBackgroundColor: GOLD,
+          pointRadius: 4, tension: 0.4,
+          yAxisID: 'y2', order: 1
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#AAAAAA', padding: 20 } },
+        tooltip: { mode: 'index', intersect: false }
+      },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666' } },
+        y1: {
+          position: 'left', type: 'logarithmic',
+          grid: { color: '#1E1E1E' },
+          ticks: { color: RED, callback: v => '$' + (v >= 1000 ? (v/1000)+'B' : v+'M') },
+          title: { display: true, text: 'Training Cost (Log Scale)', color: RED, font: { size: 9 } }
+        },
+        y2: {
+          position: 'right', grid: { color: '#1E1E1E' },
+          ticks: { color: GOLD, callback: v => v },
+          title: { display: true, text: 'Inference Cost Index', color: GOLD, font: { size: 9 } },
+          min: 0
+        }
+      }
+    }
+  });
+
+  // CHART 2 — Tech Cycle Pattern (Illustrative)
+  new Chart(document.getElementById('chart2'), {
+    type: 'line',
+    data: {
+      labels: ['Phase 1\nHype', 'Phase 2\nPeak Investment', 'Phase 3\nBust/Correction', 'Phase 4\nCost Collapse', 'Phase 5\nLate-Mover\nOpportunity', 'Phase 6\nMass\nAdoption'],
+      datasets: [
+        {
+          label: 'Early Investor Returns',
+          data: [20, 80, -60, -30, 10, 40],
+          borderColor: RED, backgroundColor: 'rgba(224,85,85,0.08)',
+          fill: true, borderWidth: 2, tension: 0.4, pointRadius: 4,
+          pointBackgroundColor: RED
+        },
+        {
+          label: 'Late-Mover Returns',
+          data: [0, 0, 0, 5, 40, 120],
+          borderColor: GOLD, backgroundColor: 'rgba(201,168,76,0.08)',
+          fill: true, borderWidth: 2, tension: 0.4, pointRadius: 4,
+          pointBackgroundColor: GOLD
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#AAAAAA', padding: 20 } }, tooltip: { mode: 'index', intersect: false } },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', font: { size: 9 } } },
+        y: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // CHART 3 — UPI vs Global Real-Time Payments
+  new Chart(document.getElementById('chart3'), {
+    type: 'bar',
+    data: {
+      labels: ['India (UPI)', 'Brazil', 'Thailand', 'China', 'South Korea', 'Others Combined'],
+      datasets: [{
+        label: 'Real-Time Payment Transactions (Billions · June 2025)',
+        data: [129.3, 37.4, 20.4, 17.2, 9.1, 15.0],
+        backgroundColor: [GOLD, GREY, GREY, GREY, GREY, GREY],
+        borderWidth: 0, borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.raw + ' Billion transactions' } } },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666' } },
+        y: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', callback: v => v + 'B' } }
+      }
+    }
+  });
+
+  // CHART 4 — Market Concentration Risk
+  new Chart(document.getElementById('chart4'), {
+    type: 'bar',
+    data: {
+      labels: ['Nokia\n(Finland 2000)', 'Novo Nordisk\n(Denmark 2024)', 'TSMC\n(Taiwan 2026)', 'Samsung+Hynix\n(KOSPI 2026)', 'Reliance\n(India 2026)'],
+      datasets: [{
+        label: 'Approx. % of National Market Cap',
+        data: [70, 57, 42, 47, 12],
+        backgroundColor: [RED, 'rgba(224,85,85,0.7)', 'rgba(91,141,239,0.7)', 'rgba(91,141,239,0.6)', GREEN],
+        borderWidth: 0, borderRadius: 3
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ~' + ctx.raw + '% of national market cap' } } },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', font: { size: 9 } } },
+        y: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', callback: v => v + '%' }, max: 70 }
+      }
+    }
+  });
+
+  // CHART 5 — India AI Market Growth
+  new Chart(document.getElementById('chart5'), {
+    type: 'line',
+    data: {
+      labels: ['2024', '2025', '2026', '2027', '2028', '2029', '2030', '2031', '2032'],
+      datasets: [{
+        label: 'India AI Market Size (USD Billions)',
+        data: [9.5, 13.05, 18.1, 25.2, 35.0, 48.6, 67.5, 93.7, 130.6],
+        borderColor: GOLD, backgroundColor: 'rgba(201,168,76,0.1)',
+        fill: true, borderWidth: 2.5, tension: 0.4,
+        pointBackgroundColor: GOLD, pointRadius: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' $' + ctx.raw + 'B' } } },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666' } },
+        y: { grid: { color: '#1E1E1E' }, ticks: { color: GOLD, callback: v => '$' + v + 'B' }, min: 0 }
+      }
+    }
+  });
+
+  // CHART 6 — Late Mover Cost Advantage
+  new Chart(document.getElementById('chart6'), {
+    type: 'line',
+    data: {
+      labels: ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028'],
+      datasets: [
+        {
+          label: 'AI Infrastructure Cost Index',
+          data: [100, 120, 180, 220, 200, 150, 100, 65, 40],
+          borderColor: RED, backgroundColor: 'rgba(224,85,85,0.08)',
+          fill: true, borderWidth: 2, tension: 0.4,
+          pointBackgroundColor: RED, pointRadius: 3
+        },
+        {
+          label: 'India AI Adoption Curve',
+          data: [2, 3, 5, 8, 15, 28, 45, 70, 95],
+          borderColor: GOLD, backgroundColor: 'rgba(201,168,76,0.08)',
+          fill: true, borderWidth: 2.5, tension: 0.4,
+          pointBackgroundColor: GOLD, pointRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#AAAAAA', padding: 20 } },
+        tooltip: { mode: 'index', intersect: false },
+        annotation: {}
+      },
+      scales: {
+        x: { grid: { color: '#1E1E1E' }, ticks: { color: '#666' } },
+        y: { grid: { color: '#1E1E1E' }, ticks: { color: '#666', callback: v => v } }
+      }
+    }
+  });
+}
+
+loadScript('https://unpkg.com/chart.js@4.4.0/dist/chart.umd.min.js', function() {
+  if (typeof Chart !== 'undefined') { initCharts(); }
+});
+</script>
+</body>
+</html>
